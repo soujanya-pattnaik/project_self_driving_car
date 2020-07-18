@@ -1,0 +1,303 @@
+//0,1,2,3,5,6,7,8,9,10. Free: 4,11,12    
+const int EnableL = 5;
+const int HighL = 6;       // LEFT SIDE MOTOR
+const int LowL =7;
+
+const int EnableR = 10;
+const int HighR = 8;       //RIGHT SIDE MOTOR
+const int LowR =9;
+
+const int D0 = 0;       //Raspberry pin 21    LSB GPIO 5
+const int D1 = 1;       //Raspberry pin 22	  GPIO 6	
+const int D2 = 2;       //Raspberry pin 23	  GPIO 13
+const int D3 = 3;       //Raspberry pin 24    MSB GPIO 19
+
+int trigPin = 11;  //Trig of Ultrasonic Connected to Pin 11 of Arduino
+int echoPin = 12;  // Echo of Ultrasonic connected to Pin 12 of Arduino
+
+
+int a,b,c,d,data;
+
+
+void setup() {
+
+pinMode(EnableL, OUTPUT);      
+pinMode(HighL, OUTPUT);
+pinMode(LowL, OUTPUT);
+
+
+pinMode(EnableR, OUTPUT);
+pinMode(HighR, OUTPUT);
+pinMode(LowR, OUTPUT);
+
+pinMode(D0, INPUT_PULLUP);
+pinMode(D1, INPUT_PULLUP);
+pinMode(D2, INPUT_PULLUP);
+pinMode(D3, INPUT_PULLUP);
+
+pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+
+}
+
+void Data()
+{
+   a = digitalRead(D0);
+   b = digitalRead(D1);
+   c = digitalRead(D2);
+   d = digitalRead(D3);
+
+   data = 8*d+4*c+2*b+a;
+}
+
+void Forward()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,170);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,170);
+  
+}
+
+
+void Backward()
+{
+  digitalWrite(HighL, HIGH);
+  digitalWrite(LowL, LOW);
+  analogWrite(EnableL,200);
+
+  digitalWrite(HighR, HIGH);
+  digitalWrite(LowR, LOW);
+  analogWrite(EnableR,200);
+  
+}
+
+void Stop()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,0);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,0);
+  
+}
+
+void Right1()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,120);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,170);
+  
+}
+
+void Right2()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,80);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,170);
+  
+}
+
+void Right3()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,30);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,170);
+  
+}
+
+void Left1()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,150);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,100);
+  
+}
+
+void Left2()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,150);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,60);
+  
+}
+
+void Left3()
+{
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,120);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,20);
+  
+}
+
+void UTurn()
+{
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(2000);
+
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL,200);
+
+  digitalWrite(HighR, LOW);
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableR,200);
+  delay(2000);
+
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(2000);
+
+  //analogWrite(EnableL, 250);
+  //analogWrite(EnableR, 250);   //Forward
+  //delay(3000);
+
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(2000);
+
+  digitalWrite(HighR, HIGH);
+  digitalWrite(LowR, LOW);
+  digitalWrite(HighL, LOW);       //Left Operation
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL, 200);
+  analogWrite(EnableR, 200);
+  delay(2000);
+
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(2000);
+
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  digitalWrite(HighR, LOW);       //Forward
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableL, 200);
+  analogWrite(EnableR, 200);
+  delay(2000);
+
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(2000);
+
+  digitalWrite(HighR, HIGH);
+  digitalWrite(LowR, LOW);
+  digitalWrite(HighL, LOW);       //Left Operation
+  digitalWrite(LowL, HIGH);
+  analogWrite(EnableL, 200);
+  analogWrite(EnableR, 200);
+  delay(2000);
+
+  analogWrite(EnableL, 0);
+  analogWrite(EnableR, 0);
+  delay(3000);
+
+  digitalWrite(HighL, LOW);
+  digitalWrite(LowL, HIGH);
+  digitalWrite(HighR, LOW);       //Forward, To Avoid Jerk gradually increase the speed of the motor
+  digitalWrite(LowR, HIGH);
+  analogWrite(EnableL, 100);
+  analogWrite(EnableR, 100);
+  delay(2000);
+  
+  
+  }
+
+
+
+
+
+void loop() 
+{
+  
+  int duration, distance;  // Adding Duration, Distance as parameters
+  digitalWrite(trigPin, HIGH); //Triggering the Wave from HC-SR04
+  delay(10);
+  digitalWrite(trigPin,LOW);
+
+  duration = pulseIn(echoPin, HIGH); // Function for listening and waiting for the wave.
+  distance = (duration/2) /29.1;  //Transforming the number to Centimeter
+  Data();
+
+  if (distance < 15)
+  {
+    Stop();
+    
+    }
+  else if(data==0)
+   {
+     Forward();
+   }
+   
+  else if(data==1)
+   {
+     Right1();
+   }
+     
+  else if(data==2)
+   {
+     Right2();
+   }
+     
+  else if(data==3)
+   {
+     Right3();
+   }
+     
+  else if(data==4)
+   {
+     Left1();
+   }
+    
+  else if(data==5)
+   {
+     Left2();
+   }
+    
+  else if(data==6)
+   {
+     Left3();
+   }
+  else if (data == 7)
+   {
+     UTurn();
+   }
+  else if (data>7)
+   {
+     Stop();
+   }
+   
+
+
+
+}
